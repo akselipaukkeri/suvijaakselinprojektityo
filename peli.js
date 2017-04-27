@@ -1,20 +1,21 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'play', { preload: preload, create: create, update: update });
 
-function preload() {
+function preload(game) {
     game.load.image('putin','putin.jpg');
-    game.load.image('ground', 'putin.jpg');
-    game.load.image('star', 'assets/star.png');
-    game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    game.load.image('ground', 'ground.png');
+    game.load.image('star', 'putin.jpg');
+    game.load.spritesheet('dude', 'dude.png', 32, 48);
     console.log("jee")
 
 }
 var platforms;
-function create() {
+var player;
+function create(game) {
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  A simple background for our game
-    game.add.sprite(0, 0, 'putin');
+ 
     console.log("vittu")
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -40,15 +41,8 @@ function create() {
     ledge = platforms.create(-150, 250, 'ground');
 
     ledge.body.immovable = true;
-
-
-}
-
-function update() {
-     var hitPlatform = game.physics.arcade.collide(player, platforms);
-}
-
- // The player and its settings
+    
+     // The player and its settings
     player = game.add.sprite(32, game.world.height - 150, 'dude');
 
     //  We need to enable physics on the player
@@ -62,6 +56,48 @@ function update() {
     //  Our two animations, walking left and right.
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
-preload()
-create()
-update()
+    player.body.gravity.y = 300;
+    
+    
+    
+
+
+}
+
+function update() {
+     var hitPlatform = game.physics.arcade.collide(player, platforms);
+    cursors = game.input.keyboard.createCursorKeys();
+      //  Reset the players velocity (movement)
+    player.body.velocity.x = 0;
+
+    if (cursors.left.isDown)
+    {
+        //  Move to the left
+        player.body.velocity.x = -150;
+
+        player.animations.play('left');
+    }
+    else if (cursors.right.isDown)
+    {
+        //  Move to the right
+        player.body.velocity.x = 150;
+
+        player.animations.play('right');
+    }
+    else
+    {
+        //  Stand still
+        player.animations.stop();
+
+        player.frame = 4;
+    }
+
+    //  Allow the player to jump if they are touching the ground.
+    if (cursors.up.isDown && player.body.touching.down && hitPlatform)
+    {
+        player.body.velocity.y = -350;
+    }
+}
+
+
+
