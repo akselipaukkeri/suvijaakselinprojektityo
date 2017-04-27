@@ -56,18 +56,19 @@ function create(game) {
     //  Our two animations, walking left and right.
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
-    player.body.gravity.y = 300;
+
+      
     
-    
-    
+
 
 
 }
 
 function update() {
-     var hitPlatform = game.physics.arcade.collide(player, platforms);
-    cursors = game.input.keyboard.createCursorKeys();
-      //  Reset the players velocity (movement)
+
+ var hitPlatform = game.physics.arcade.collide(player, platforms);
+    var cursors = game.input.keyboard.createCursorKeys();
+   
     player.body.velocity.x = 0;
 
     if (cursors.left.isDown)
@@ -97,7 +98,11 @@ function update() {
     {
         player.body.velocity.y = -350;
     }
-}
+    
+    }
+    
+
+
 
 
 
