@@ -1,20 +1,23 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'play', { preload: preload, create: create, update: update });
 
 function preload(game) {
-    game.load.image('putin','putin.jpg');
+    game.load.image('putin','pyramid.jpg');
     game.load.image('ground', 'ground.png');
-    game.load.image('star', 'putin.jpg');
+    game.load.image('star', 'dude.png');
     game.load.spritesheet('dude', 'dude.png', 32, 48);
     console.log("jee")
 
 }
 var platforms;
 var player;
+var score = 0;
+var scoreText;
 function create(game) {
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  A simple background for our game
+      game.add.sprite(0, 0, 'putin');
  
     console.log("vittu")
 
@@ -29,6 +32,7 @@ function create(game) {
 
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     ground.scale.setTo(2, 2);
+    ground.scale.setTo(5,5);
 
     //  This stops it from falling away when you jump on it
     ground.body.immovable = true;
@@ -56,7 +60,25 @@ function create(game) {
     //  Our two animations, walking left and right.
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right',  [0, 1, 2, 3], 10, true);
+    
+      stars = game.add.group();
 
+    stars.enableBody = true;
+
+    //  Here we'll create 12 of them evenly spaced apart
+    for (var i = 0; i < 12; i++)
+    {
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(i * 70, 0, 'star');
+
+        //  Let gravity do its thing
+        star.body.gravity.y = 6;
+
+        //  This just gives each star a slightly random bounce value
+        star.body.bounce.y = 0.7 + Math.random() * 0.2;
+    }
+
+    scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
       
     
 
@@ -98,8 +120,18 @@ function update() {
     {
         player.body.velocity.y = -350;
     }
+    game.physics.arcade.collide(stars, platforms);
+    game.physics.arcade.overlap(player, stars, collectStar, null, this);
     
     }
+function collectStar (player, star) {
+
+    // Removes the star from the screen
+    star.kill();
+     score += 10;
+    scoreText.text = 'Score: ' + score;
+
+}
     
 
 
