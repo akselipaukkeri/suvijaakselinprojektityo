@@ -33,6 +33,8 @@ function create(game) {
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
     ground.scale.setTo(2, 2);
     ground.scale.setTo(5,5);
+    ground.scale.setTo(8,8);
+    ground.scale.setTo(11,11);
 
     //  This stops it from falling away when you jump on it
     ground.body.immovable = true;
@@ -66,16 +68,16 @@ function create(game) {
     stars.enableBody = true;
 
     //  Here we'll create 12 of them evenly spaced apart
-    for (var i = 0; i < 12; i++)
+    for (var i = 0; i < 50; i++)
     {
         //  Create a star inside of the 'stars' group
-        var star = stars.create(i * 70, 0, 'star');
+        var star = stars.create(i * 20, 0, 'star');
 
         //  Let gravity do its thing
         star.body.gravity.y = 6;
 
         //  This just gives each star a slightly random bounce value
-        star.body.bounce.y = 0.7 + Math.random() * 0.2;
+        star.body.bounce.y = 0.5 + Math.random() * 0.2;
     }
 
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
