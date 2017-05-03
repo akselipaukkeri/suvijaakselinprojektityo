@@ -1,25 +1,38 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'play', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(640, 600, Phaser.AUTO, 'play', { preload: preload, create: create, update: update });
 
-function preload(game) {
-    game.load.image('putin','pyramid.jpg');
-    game.load.image('ground', 'ground.png');
-    game.load.image('star', 'dude.png');
-    game.load.spritesheet('dude', 'dude.png', 32, 48);
-    console.log("jee")
-
-}
 var platforms;
 var player;
 var score = 0;
 var scoreText;
+
+function preload(game) {
+    game.load.image('putin', 'sky.png');
+    game.load.image('ground', 'dirt.png');
+    game.load.image('star', 'leaf.gif');
+    game.load.spritesheet('dude', 'cows.png', 40, 34);
+    console.log("jee");
+}
+
+//tein tälle oman metodin, ni tähtiä voi luoda myös sillon, kun lehmä saa niitä syötyä.
+function createStar(game) {
+    //  Create a star inside of the 'stars' group
+    var star = stars.create(Math.random() * 640, 0, 'star');
+
+        //  Let gravity do its thing
+    star.body.gravity.y = 6;
+
+        //  This just gives each star a slightly random bounce value
+    star.body.bounce.y = 0.5 + Math.random() * 0.2;
+}
+
 function create(game) {
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  A simple background for our game
-      game.add.sprite(0, 0, 'putin');
+    game.add.sprite(0, 0, 'putin');
  
-    console.log("vittu")
+    console.log("vittu");
 
     //  The platforms group contains the ground and the 2 ledges we can jump on
     platforms = game.add.group();
@@ -31,20 +44,20 @@ function create(game) {
     var ground = platforms.create(0, game.world.height - 64, 'ground');
 
     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-    ground.scale.setTo(2, 2);
-    ground.scale.setTo(5,5);
-    ground.scale.setTo(8,8);
-    ground.scale.setTo(11,11);
+    //.scale.setTo(2, 2);
+    //ground.scale.setTo(5,5);
+    //ground.scale.setTo(8,8);
+    //ground.scale.setTo(11,11);
 
     //  This stops it from falling away when you jump on it
     ground.body.immovable = true;
 
     //  Now let's create two ledges
-    var ledge = platforms.create(400, 400, 'ground');
+    var ledge = platforms.create(400, 350, 'ground');
 
     ledge.body.immovable = true;
 
-    ledge = platforms.create(-150, 250, 'ground');
+    ledge = platforms.create(-400, 200, 'ground');
 
     ledge.body.immovable = true;
     
@@ -60,30 +73,20 @@ function create(game) {
     player.body.collideWorldBounds = true;
 
     //  Our two animations, walking left and right.
-    player.animations.add('left', [0, 1, 2, 3], 10, true);
-    player.animations.add('right',  [0, 1, 2, 3], 10, true);
+    player.animations.add('left', [0], 10, true);
+    player.animations.add('right',  [1], 10, true);
     
-      stars = game.add.group();
+    stars = game.add.group();
 
     stars.enableBody = true;
 
-    //  Here we'll create 12 of them evenly spaced apart
-    for (var i = 0; i < 50; i++)
+    //  Here we'll create 10 of them evenly spaced apart
+    for (var i = 0; i < 10; i++)
     {
-        //  Create a star inside of the 'stars' group
-        var star = stars.create(i * 20, 0, 'star');
-
-        //  Let gravity do its thing
-        star.body.gravity.y = 6;
-
-        //  This just gives each star a slightly random bounce value
-        star.body.bounce.y = 0.5 + Math.random() * 0.2;
+       createStar(game);
     }
 
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-      
-    
-
 
 
 }
@@ -114,7 +117,7 @@ function update() {
         //  Stand still
         player.animations.stop();
 
-        player.frame = 4;
+        //player.frame = 4;
     }
 
     //  Allow the player to jump if they are touching the ground.
@@ -126,17 +129,13 @@ function update() {
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
     
     }
+
+//tästä saa pisteitä ja samalla ilmestyy uusi tähti.
 function collectStar (player, star) {
 
     // Removes the star from the screen
     star.kill();
-     score += 10;
+    score += 10;
     scoreText.text = 'Score: ' + score;
-
+    createStar(game);
 }
-    
-
-
-
-
-
