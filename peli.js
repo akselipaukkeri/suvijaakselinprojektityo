@@ -10,7 +10,8 @@ function preload(game) {
     game.load.image('ground', 'dirt.png');
     game.load.image('star', 'leaf.gif');
     game.load.spritesheet('dude', 'cows.png', 40, 34);
-    console.log("jee");
+    game.load.image('enemy', 'dude.png');
+    
 }
 
 //tein tälle oman metodin, ni tähtiä voi luoda myös sillon, kun lehmä saa niitä syötyä.
@@ -23,6 +24,17 @@ function createStar(game) {
 
         //  This just gives each star a slightly random bounce value
     star.body.bounce.y = 0.5 + Math.random() * 0.2;
+}
+
+function createEnemy(game) {
+    //  Create a star inside of the 'stars' group
+    var enemy = enemies.create(Math.random() * 640, 0, 'enemy');
+
+        //  Let gravity do its thing
+    enemy.body.gravity.y = 6;
+
+        //  This just gives each star a slightly random bounce value
+    enemy.body.bounce.y = 1.0;
 }
 
 function create(game) {
@@ -77,8 +89,10 @@ function create(game) {
     player.animations.add('right',  [1], 10, true);
     
     stars = game.add.group();
-
     stars.enableBody = true;
+    
+    enemies = game.add.group();
+    enemies.enableBody = true;
 
     //  Here we'll create 10 of them evenly spaced apart
     for (var i = 0; i < 10; i++)
@@ -125,8 +139,10 @@ function update() {
     {
         player.body.velocity.y = -350;
     }
-    game.physics.arcade.collide(stars, platforms);
+    //game.physics.arcade.collide(stars, platforms);
+    game.physics.arcade.collide(enemies, platforms);
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
+    //game.physics.arcade.overlap(player, enemies??)
     
     }
 
@@ -138,4 +154,7 @@ function collectStar (player, star) {
     score += 10;
     scoreText.text = 'Score: ' + score;
     createStar(game);
+    if (score % 100 == 0) {
+        createEnemy(game);
+    }
 }
