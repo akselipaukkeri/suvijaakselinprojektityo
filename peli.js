@@ -4,6 +4,7 @@ var platforms;
 var player;
 var score = 0;
 var scoreText;
+var vihollinen = 0
 
 function preload(game) {
     game.load.image('putin', 'sky.png');
@@ -11,6 +12,7 @@ function preload(game) {
     game.load.image('star', 'leaf.gif');
     game.load.spritesheet('dude', 'cows.png', 40, 34);
     game.load.image('enemy', 'dude.png');
+  
     
 }
 
@@ -18,7 +20,7 @@ function preload(game) {
 function createStar(game) {
     //  Create a star inside of the 'stars' group
     var star = stars.create(Math.random() * 640, 0, 'star');
-
+vihollinen +=1
         //  Let gravity do its thing
     star.body.gravity.y = 6;
 
@@ -28,13 +30,28 @@ function createStar(game) {
 
 function createEnemy(game) {
     //  Create a star inside of the 'stars' group
-    var enemy = enemies.create(Math.random() * 640, 0, 'enemy');
+    
+   for (var i = 0; i < 2; i++)
+    {
 
-        //  Let gravity do its thing
-    enemy.body.gravity.y = 6;
+      
+    
+
+    var enemy = enemies.create(Math.random() * 10, Math.random()*550, 'enemy');
+         enemy.body.gravity.x= ((Math.random() * 10) + 1)*10;
+    
 
         //  This just gives each star a slightly random bounce value
     enemy.body.bounce.y = 1.0;
+    
+    enemy.body.velocity.x =((Math.random() * 10) + 1)*17
+    
+    }
+        //  Let gravity do its thing
+    
+  
+    
+    
 }
 
 function create(game) {
@@ -98,6 +115,7 @@ function create(game) {
     for (var i = 0; i < 10; i++)
     {
        createStar(game);
+      
     }
 
     scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
@@ -140,7 +158,7 @@ function update() {
         player.body.velocity.y = -350;
     }
     //game.physics.arcade.collide(stars, platforms);
-    game.physics.arcade.collide(enemies, platforms);
+    //game.physics.arcade.collide(enemies, platforms);
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
     //game.physics.arcade.overlap(player, enemies??)
     
@@ -154,7 +172,7 @@ function collectStar (player, star) {
     score += 10;
     scoreText.text = 'Score: ' + score;
     createStar(game);
-    if (score % 100 == 0) {
+    if (score %10==0 ) {
         createEnemy(game);
     }
 }
