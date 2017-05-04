@@ -6,6 +6,9 @@ var score = 0;
 var scoreText;
 var vihollinen = 0
 
+var audio = new Audio('lehma.mp3');
+audio.play();
+
 function preload(game) {
     game.load.image('putin', 'sky.png');
     game.load.image('ground', 'dirt.png');
@@ -44,7 +47,7 @@ function createEnemy(game) {
         //  This just gives each star a slightly random bounce value
     enemy.body.bounce.y = 1.0;
     
-    enemy.body.velocity.x =((Math.random() * 10) + 1)*17
+    enemy.body.velocity.x =((Math.random() * 10) + 1)*20
     
     }
         //  Let gravity do its thing
