@@ -4,7 +4,11 @@ var platforms;
 var player;
 var score = 0;
 var scoreText;
-var vihollinen = 0
+
+var vihollinen = 0;
+
+var enemies;
+
 
 function preload(game) {
     game.load.image('putin', 'sky.png');
@@ -20,7 +24,7 @@ function preload(game) {
 function createStar(game) {
     //  Create a star inside of the 'stars' group
     var star = stars.create(Math.random() * 640, 0, 'star');
-vihollinen +=1
+    vihollinen +=1;
         //  Let gravity do its thing
     star.body.gravity.y = 6;
 
@@ -30,33 +34,42 @@ vihollinen +=1
 
 function createEnemy(game) {
     //  Create a star inside of the 'stars' group
-    
-   for (var i = 0; i < 2; i++)
-    {
 
-      
+    
+   //for (var i = 0; i < 2; i++)
+   // {
+    //var enemy = enemies.create(Math.random() * 10, //Math.random()*550, 'enemy');
+    //enemy.body.gravity.x= ((Math.random() * 10) + 1)*10;
     
 
-    var enemy = enemies.create(Math.random() * 10, Math.random()*550, 'enemy');
-         enemy.body.gravity.x= ((Math.random() * 10) + 1)*10;
+    //  This just gives each star a slightly random bounce value
+    //enemy.body.bounce.y = 1.0;
     
+    //enemy.body.velocity.x =((Math.random() * 10) + 1)*17
+    
+   // }
+        //  Let gravity do its thing
+    
+    var enemy = enemies.create(0, Math.random() * 600, 'enemy');
+
+        //  Let gravity do its thing
+    //enemy.body.gravity.y = 6;
 
         //  This just gives each star a slightly random bounce value
     enemy.body.bounce.y = 1.0;
-    
-    enemy.body.velocity.x =((Math.random() * 10) + 1)*17
-    
-    }
-        //  Let gravity do its thing
-    
-  
-    
-    
+    enemy.body.bounce.x = 1.0;
+    enemy.body.gravity.x= ((Math.random() * 10) + 1)*10;
+    enemy.body.collideWorldBounds = true;
+    enemy.physicsBodyType = Phaser.Physics.P2JS;
+
 }
 
 function create(game) {
     //  We're going to be using physics, so enable the Arcade Physics system
     game.physics.startSystem(Phaser.Physics.ARCADE);
+    game.physics.startSystem(Phaser.Physics.P2JS);
+    
+    
 
     //  A simple background for our game
     game.add.sprite(0, 0, 'putin');
@@ -160,9 +173,13 @@ function update() {
     //game.physics.arcade.collide(stars, platforms);
     //game.physics.arcade.collide(enemies, platforms);
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
-    //game.physics.arcade.overlap(player, enemies??)
+    //game.physics.arcade.overlap(player, enemies, gameOver(), null, this);
     
     }
+
+function gameOver(){
+    
+}
 
 //tästä saa pisteitä ja samalla ilmestyy uusi tähti.
 function collectStar (player, star) {
@@ -172,7 +189,7 @@ function collectStar (player, star) {
     score += 10;
     scoreText.text = 'Score: ' + score;
     createStar(game);
-    if (score %10==0 ) {
+    if (score % 100 == 0 ) {
         createEnemy(game);
     }
 }
