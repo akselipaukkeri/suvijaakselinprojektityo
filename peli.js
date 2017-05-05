@@ -39,20 +39,22 @@ function createEnemy(game) {
     //  Create a star inside of the 'stars' group
 
     
-   //for (var i = 0; i < 2; i++)
-   // {
-    //var enemy = enemies.create(Math.random() * 10, //Math.random()*550, 'enemy');
-    //enemy.body.gravity.x= ((Math.random() * 10) + 1)*10;
+   for (var i = 0; i < 2; i++)
+    {
+   // var enemy = enemies.create(Math.random() * 10) //Math.random()*550, 'enemy');
+          var enemy = enemies.create(0, Math.random() * 600, 'enemy');
+
+    enemy.body.gravity.x= ((Math.random() * 10) + 1)*10;
     
 
     //  This just gives each star a slightly random bounce value
-    //enemy.body.bounce.y = 1.0;
+    enemy.body.bounce.y = 1.0;
     
-<<<<<<< HEAD
+
     enemy.body.velocity.x =((Math.random() * 10) + 1)*20
-=======
+
     //enemy.body.velocity.x =((Math.random() * 10) + 1)*17
->>>>>>> origin/master
+
     
    // }
         //  Let gravity do its thing
@@ -69,6 +71,7 @@ function createEnemy(game) {
     enemy.body.collideWorldBounds = true;
     enemy.physicsBodyType = Phaser.Physics.P2JS;
 
+}
 }
 
 function create(game) {
@@ -184,8 +187,9 @@ function update() {
     
     }
 
-function gameOver(){
-    
+function gameOver(player,enemy){
+  player.kill();
+    console.log("game over")
 }
 
 //tästä saa pisteitä ja samalla ilmestyy uusi tähti.
@@ -200,3 +204,4 @@ function collectStar (player, star) {
         createEnemy(game);
     }
 }
+
