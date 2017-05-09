@@ -7,22 +7,28 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-< Updated upstream:project.html></Updated>
-        <script src="phaser.js"> </script>
-        <script src="peli.js"></script>
-        <!--<script src="gameover.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+        <script src="phaser.min.js"> </script>
+        <script src="boot.js"> </script>
+        <script src="load.js"> </script>
+        <script src="menu.js"> </script>
+        <script src="game.js"></script>
+        <script src="gameover.js"></script>
         <script>
-            var game = new Phaser.Game(640, 600, Phaser.AUTO, 'play', { preload: preload, create: create, update: update });
+        (function() {
+            //State-tiedostojen alustaminen.
+            var game = new Phaser.Game(640, 600, Phaser.CANVAS, "game");
+            game.state.add("Boot", boot);
+            game.state.add("Preload", preload);
+            game.state.add("GameTitle", gameTitle);
+            game.state.add("TheGame", theGame);
+            game.state.add("GameOver", gameOver);
             
-            game.state.add('peli', peliState);
-            game.state.add('gameOver', gameOverState);
-            
-            game.state.start('peli');
-        </script> -->
+            game.state.start("Boot");
+            }) ();
+        </script>
     </head>
     <body>
-        <div id="play"> </div>
-        <canvas width="800" height="600" style="display: block; touch-action: none; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas>
->>>>>>> Stashed changes:index.html
+        
     </body>
 </html>
